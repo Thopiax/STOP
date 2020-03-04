@@ -1,2 +1,3 @@
-# STOPjs
-Front-end for Stop
+# STOP
+
+Quick project for creating the game STOP.
