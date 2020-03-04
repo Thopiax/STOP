@@ -10,7 +10,8 @@ class Room:
     def add_player(self, player):
         self.players[player.id] = player
 
-    def start_game(self, game):
+    def start_game(self):
+        self.points = {}
         pass
 
     def start_round(self):
