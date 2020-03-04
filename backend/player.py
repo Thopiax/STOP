@@ -6,10 +6,9 @@ class Player:
         self.points = 0
         self.answers = {}
 
-
-    def __repr__(self):
+    def to_json(self):
         return {
-            "room": self.room,
+            "room": self.room.id,
             "color": self.room
         }
 
