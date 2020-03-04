@@ -19,3 +19,6 @@ class Room():
 
     def finish_game(self):
         pass
+
+def get_new_room_id():
+    return 1
