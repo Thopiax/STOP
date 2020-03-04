@@ -4,10 +4,9 @@ class Player:
         self.room = room
         self.id = color
 
-
-    def __repr__(self):
+    def to_json(self):
         return {
-            "room": self.room,
+            "room": self.room.id,
             "color": self.room
         }
 

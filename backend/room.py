@@ -1,8 +1,11 @@
-class Room():
+next_room_id = 0
 
-    def __init__(self):
+
+class Room:
+
+    def __init__(self, room_id):
         self.players = {}
-        self.id = []
+        self.id = room_id
 
     def add_player(self, player):
         self.players[player.id] = player
@@ -19,5 +22,13 @@ class Room():
     def finish_game(self):
         pass
 
+    def to_json(self):
+        return {
+            "id": self.id
+        }
+
+
 def get_new_room_id():
-    return 1
+    global next_room_id
+    next_room_id += 1
+    return next_room_id
