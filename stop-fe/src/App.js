@@ -20,17 +20,18 @@ function RoomJoin() {
 function App() {
   return (
     <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>STOP</h1>
-          <div>
-            <Link to="/create" class="button"><button>Create Room</button></Link>
-            <Link to="/join" class="button"><button>Join Room</button></Link>
-          </div>
-        </header>
-      </div>
-
       <Switch>
+        <Route exact path="/">
+          <div className="App">
+            <header className="App-header">
+              <h1>STOP</h1>
+              <div>
+                <Link to="/create" class="button"><button>Create Room</button></Link>
+                <Link to="/join" class="button"><button>Join Room</button></Link>
+              </div>
+            </header>
+          </div>
+        </Route>
         <Route exact path="/create">
           <RoomSetup />
         </Route>
