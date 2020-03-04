@@ -1,20 +1,24 @@
 next_room_id = 0
 
+from backend.round import Round
 
 class Room:
 
     def __init__(self, room_id):
         self.players = {}
         self.id = room_id
-        self.round_points = {}
+        self.running = False
 
     def add_player(self, player):
         self.players[player.id] = player
 
     def start_game(self):
-        pass
+        self.points = {}
+        self.running = True
 
     def start_round(self):
+        letter = self.choose_letter()
+        round = Round(letter)
         pass
 
     def finish_round(self):
@@ -26,13 +30,10 @@ class Room:
     def choose_letter(self):
         pass
 
-    def calculate_score(self, player_answers):
-
-        return self.round_points
-
     def to_json(self):
         return {
-            "id": self.id
+            "id": self.id,
+            "running": self.running
         }
 
 
