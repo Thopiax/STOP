@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { Socket } from 'react-socket-io';
 import {Home} from "./Home";
-import {Game} from "./Game";
+import {Room} from "./Room";
 
 const options = { transports: ['websocket'] };
 
@@ -22,7 +22,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/"><Home/></Route>
-            <Route path="/room/:roomid"><Game/></Route>
+            <Route path="/room/:roomid"><Room/></Route>
           </Switch>
         </Router>
       </Socket>
