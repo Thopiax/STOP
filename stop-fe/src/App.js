@@ -3,19 +3,18 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link,
-  useHistory
+  Route
 } from "react-router-dom";
 
-
+import { Home } from './Home';
+import { Game } from './Game';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/"><Home/></Route>
-        <Route path="/room/:id"><Game/></Route>
+        <Route path="/room/:roomId"><Game/></Route>
       </Switch>
     </Router>
   );

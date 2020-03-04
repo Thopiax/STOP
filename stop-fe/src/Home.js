@@ -1,30 +1,27 @@
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect} from 'react';
 import env from "./Environment";
-import {
-  useHistory
-} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 export const Home = () => {
   const [roomId, setRoomId] = useState("");
 
-  history = useHistory();
+  let history = useHistory();
 
   const joinRoom = (id) => {
     history.push("room/" + id);
   };
 
   const createRoom = () => {
-    console.log("Starting create room call");
-    fetch("http://localhost/create_room")
+    console.log("[CreateRoom] Started call");
+    fetch(env.BACKEND_URL + "/create_room")
       .then(res => res.json())
       .then(
         (result) => {
-          console.log("Call returned " + result);
+          console.log("[CreateRoom] Successfully returned call", result);
           joinRoom(result.id);
         })
       .catch(
-        (exception) => console.log(exception)
+        (exception) => console.error(exception)
       );
   };
 
@@ -32,13 +29,10 @@ export const Home = () => {
     <div>
       <h1>STOP.io</h1>
       <div>
-        <label>
-          <input type="text" value={roomId} onChange={(roomId) => setRoomId(roomId.toUpperCase())}/>
-        </label>
+        <input type="text" value={roomId} onChange={(e) => setRoomId(e.target.value.toUpperCase())} />
         <button onClick={() => joinRoom(roomId)}>Join Room</button>
         <button onClick={createRoom}>Create Room</button>
       </div>
     </div>
   );
-
 };
