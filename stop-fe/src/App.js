@@ -22,21 +22,10 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          <div className="App">
-            <header className="App-header">
-              <h1>STOP</h1>
-              <div>
-                <Link to="/create" class="button"><button>Create Room</button></Link>
-                <Link to="/join" class="button"><button>Join Room</button></Link>
-              </div>
-            </header>
-          </div>
+          <RoomCreate />
         </Route>
-        <Route exact path="/create">
-          <RoomSetup />
-        </Route>
-        <Route exact path="/join">
-          <RoomJoin />
+        <Route exact path="/<room_id>">
+          <Game />
         </Route>
       </Switch>
     </Router>
