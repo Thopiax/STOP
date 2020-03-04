@@ -1,44 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import env from './Environment';
 import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  useLocation
+  useHistory
 } from "react-router-dom";
+import { Socket } from 'react-socket-io';
+import {Home} from "./Home";
+import {Game} from "./Game";
 
-function RoomSetup() {
-  return (<div></div>);
-}
+const options = { transports: ['websocket'] };
 
-function RoomJoin() {
-  return (<div></div>);
-}
+
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>STOP</h1>
-          <div>
-            <Link to="/create" class="button"><button>Create Room</button></Link>
-            <Link to="/join" class="button"><button>Join Room</button></Link>
-          </div>
-        </header>
-      </div>
-
-      <Switch>
-        <Route exact path="/create">
-          <RoomSetup />
-        </Route>
-        <Route exact path="/join">
-          <RoomJoin />
-        </Route>
-      </Switch>
-    </Router>
+      <Socket uri={env.BACKEND_URL} options={options}>
+        <Router>
+          <Switch>
+            <Route exact path="/"><Home/></Route>
+            <Route path="/room/:roomid"><Game/></Route>
+          </Switch>
+        </Router>
+      </Socket>
   );
 }
 
