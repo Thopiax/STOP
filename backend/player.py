@@ -8,8 +8,9 @@ class Player:
 
     def to_json(self):
         return {
-            "room": self.room.id,
-            "color": self.room
+            "id": self.id,
+            "room_id": self.room.id,
+            "points": self.points,
         }
 
 
