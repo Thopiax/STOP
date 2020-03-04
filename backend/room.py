@@ -6,13 +6,14 @@ class Room:
     def __init__(self, room_id):
         self.players = {}
         self.id = room_id
+        self.running = False
 
     def add_player(self, player):
         self.players[player.id] = player
 
     def start_game(self):
         self.points = {}
-        pass
+        self.running = True
 
     def start_round(self):
         pass
@@ -25,7 +26,8 @@ class Room:
 
     def to_json(self):
         return {
-            "id": self.id
+            "id": self.id,
+            "running": self.running
         }
 
 
