@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import * as _ from "lodash";
-import { Select } from '@material-ui/core';
 import {
   TextField,
   List,
@@ -9,17 +8,17 @@ import {
   ListItemText,
   IconButton
 } from "@material-ui/core";
-import { ClearIcon } from "@material-ui/icons";
+import ClearIcon from '@material-ui/icons/Clear';
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 
-
-
-const HostLobby = ({ room_id }) => {
+const HostLobby = ({ roomId }) => {
+  const [currentCategory, setCurrentCategory] = useState("");
   const [categories, setCategories] = useState([]);
 
-  let categoryValue = "";
-
   const addCategory = (category) => {
-    setCategories([...categories, category])
+    setCategories([...categories, category]);
+    setCurrentCategory("");
   };
 
   const removeCategory = (category) => {
@@ -33,7 +32,7 @@ const HostLobby = ({ room_id }) => {
           <ListItem>
             <ListItemText primary={category} />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="clear" onClick={(cat) => removeCategory(cat)}>
+              <IconButton edge="end" aria-label="clear" onClick={(e) => removeCategory(category)}>
                 <ClearIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -43,19 +42,30 @@ const HostLobby = ({ room_id }) => {
     );
   };
 
-  return (<div>
-    <h2>Room {room_id}</h2>
+  return (<Container>
+    <h2>Room {roomId}</h2>
 
     <CategoryList categories={categories} />
-    <TextField label="Category" value={categoryValue}/>
+    <TextField label="Category" value={currentCategory} onChange={(e) => setCurrentCategory(e.target.value)}/>
+    <Button onClick={() => addCategory(currentCategory)}>Add</Button>
 
-  </div>);
+  </Container>);
 };
 
 const GuestLobby = (props) => {
-    return <p>Waiting for host to pick categories...</p>
+  return <p>Waiting for host to pick categories...</p>
 };
 
 export const Lobby = ({ player: { room_id, is_host } }) => {
-    return is_host ? <HostLobby player={player} /> : <GuestLobby />;
+  let contents = <GuestLobby/>;
+
+  if (is_host) {
+    contents = <HostLobby roomId={room_id} />;
+  }
+
+  return (
+    <Container>
+      {contents}
+    </Container>
+  );
 };

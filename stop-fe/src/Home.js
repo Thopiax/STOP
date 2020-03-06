@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import env from "./Environment";
 import {useHistory} from "react-router-dom";
-import {TextField} from "@material-ui/core";
-import { Event } from 'react-socket-io';
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import {HomeButton, HomeContainer, HomeContent, HomeFormContainer, HomeTexField, HomeTitle} from "./Components";
+import Button from "@material-ui/core/Button";
 
 export const Home = () => {
   const [roomId, setRoomId] = useState("");
@@ -32,14 +34,18 @@ export const Home = () => {
   };
 
   return (
-    <div>
-      <Event event='eventName' handler={onEvent} />
-      <h1>STOP.io</h1>
-      <div>
-        <input type="text" value={roomId} onChange={(e) => setRoomId(e.target.value.toUpperCase())} />
-        <button onClick={() => joinRoom(roomId)}>Join Room</button>
-        <button onClick={createRoom}>Create Room</button>
-      </div>
-    </div>
+    <HomeContainer>
+      <HomeTitle>STOP.io</HomeTitle>
+      <HomeContent>
+        <form style={{display: "flex"}} noValidate autoComplete="off">
+          <TextField variant="outlined" label="Room Id" value={roomId} onChange={(e) => setRoomId(e.target.value.toUpperCase())} />
+          <Button variant="outlined" disabled={roomId === ""} onClick={() => joinRoom(roomId)}>Join Room</Button>
+        </form>
+        <hr />
+        <form noValidate autoComplete="off">
+          <Button style={{width: "100%"}} variant="outlined" onClick={createRoom}>Create Room</Button>
+        </form>
+    </HomeContent>
+    </HomeContainer>
   );
 };
