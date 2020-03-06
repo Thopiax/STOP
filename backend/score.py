@@ -21,20 +21,7 @@ def calculate_score(answers: dict):
                 intermediate[answer] = []
 
             intermediate[answer].append(player)
-    print (intermediate)
 
-    # unique_answers = []
-    # values = []
-    # for i in answers:
-    #     values.append(answers[i].values())
-    #
-    #
-    #
-    # unique_answers = set(all_answers)
-    #
-    # for players, categories in answers.items():
-    #     intermediate.keys() = answers[i]
-    #
     points = {}
 
     for word, players in intermediate.items():

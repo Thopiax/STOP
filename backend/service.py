@@ -59,14 +59,27 @@ def start_game(room_id):
 
 @socketio.on('connect')
 def test_connect():
-    emit('connect', {'data': 'Connected'})
+    emit('connect', {'data': 'something'})
 
 
 @socketio.on('initialize_room')
 def initialize(room_id):
-    print("brap")
     room = get_room_if_exists(room_id)
-    emit('something', {'data': room})
+    emit('initialize_room', room.to_json())
+
+
+@socketio.on('start_round')
+def start_round(room_id):
+    room = get_room_if_exists(room_id)
+    round = room.new_round()
+    emit('start_round', round.to_json())
+
+
+@socketio.on('end_round')
+def initialize(room_id):
+    room = get_room_if_exists(room_id)
+    round = room.end_round()
+    emit('end_round', round.to_json())
 
 
 @socketio.on_error_default  # handles all namespaces without an explicit error handler

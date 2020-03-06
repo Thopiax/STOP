@@ -1,39 +1,57 @@
+from typing import List, Dict, Optional
+
+from backend.player import Player
+from backend.round import Round
+from string import ascii_uppercase
+from random import randint
+
 next_room_id = 0
 
-from backend.round import Round
 
 class Room:
 
-    def __init__(self, room_id):
+    def __init__(self, room_id: int):
         self.players = {}
         self.id = room_id
-        self.running = False
+        self.unused_letters: List = list(ascii_uppercase)
+        self.current_round: Optional[Round] = None
+        self.categories: List[str] = []
+        self.round_history: List[Round] = []
 
-    def add_player(self, player):
+    def add_player(self, player: Player):
         self.players[player.id] = player
-
-    def start_game(self):
-        self.points = {}
-        self.running = True
 
     def start_round(self):
         letter = self.choose_letter()
-        round = Round(letter)
-        pass
+        self.current_round = Round(letter, self.categories)
+        return self.current_round
 
-    def finish_round(self):
-        pass
+    def stop_round(self, player: Player) -> Dict[str, int]:
+        self.current_round.stop(player)
+        self.round_history.append(self.current_round)
+        self.current_round = None
 
-    def finish_game(self):
-        pass
+    def choose_letter(self) -> str:
+        random_index = randint(0, len(self.unused_letters) - 1)
+        random_letter = self.unused_letters.pop(random_index)
+        return random_letter
 
-    def choose_letter(self):
-        pass
+    def choose_categories(self, categories):
+        self.categories = categories
+
+    def end_game(self):
+        total_points = {player: 0 for player in self.players}
+        for round in self.round_history:
+            for player, points_this_round in round.points.items():
+                total_points[player] += points_this_round
+
+        return total_points
 
     def to_json(self):
         return {
             "id": self.id,
-            "running": self.running
+            "running": self.current_round is not None,
+            "current_round": self.current_round.to_json()
         }
 
 

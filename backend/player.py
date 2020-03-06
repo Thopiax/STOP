@@ -14,5 +14,8 @@ class Player:
         }
 
 
+colors = ["BLUE", "RED", "PURPLE", "YELLOW"]
+
+
 def get_new_color():
-    return "BLUE"
+    return colors.pop()
