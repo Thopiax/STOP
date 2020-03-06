@@ -10,19 +10,22 @@ import {
 import {Home} from "./Home";
 import {Game} from "./Game";
 import {AppContainer} from "./Components";
+import {Socket} from "react-socket-io";
 
 const options = { transports: ['websocket'] };
 
 function App() {
   return (
-    <Router>
-      <AppContainer>
-        <Switch>
-          <Route exact path="/"><Home/></Route>
-          <Route path="/room/:roomid"><Game/></Route>
-        </Switch>
-      </AppContainer>
-    </Router>
+    <Socket uri={env.BACKEND_URL} options={options}>
+      <Router>
+        <AppContainer>
+          <Switch>
+            <Route exact path="/"><Home /></Route>
+            <Route path="/room/:roomid"><Game /></Route>
+          </Switch>
+        </AppContainer>
+      </Router>
+    </Socket>
   );
 }
 

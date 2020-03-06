@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import {Lobby} from "./Lobby";
 
 
-export const Game = (props) => {
+export const Room = (props) => {
   let {roomId} = useParams();
 
   const [player, setPlayer] = useState({});

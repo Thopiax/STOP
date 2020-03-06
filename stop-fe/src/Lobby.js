@@ -11,6 +11,7 @@ import {
 import ClearIcon from '@material-ui/icons/Clear';
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
+import {Event} from "react-socket-io";
 
 const HostLobby = ({ roomId }) => {
   const [currentCategory, setCurrentCategory] = useState("");
@@ -57,15 +58,20 @@ const GuestLobby = (props) => {
 };
 
 export const Lobby = ({ player: { room_id, is_host } }) => {
+  const onInitializeEvent = (room) => {
+    return <Game room={room}/>;
+  };
+
   let contents = <GuestLobby/>;
 
   if (is_host) {
-    contents = <HostLobby roomId={room_id} />;
+    contents = <HostLobby roomId={room_id}/>;
   }
 
   return (
     <Container>
       {contents}
+      <Event event='initialize_room' handler={onInitializeEvent}/>
     </Container>
   );
 };
