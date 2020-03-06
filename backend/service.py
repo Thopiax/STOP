@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_socketio import SocketIO, emit
 
 from backend.exceptions import BadRequestException
 from backend.player import Player, get_new_color
@@ -6,17 +7,18 @@ from backend.room import get_new_room_id, Room
 from backend.rooms import rooms, get_room_if_exists
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.errorhandler(BadRequestException)
 def handle_bad_request(e):
-    return error(e.message)
+    return jsonify(error(e))
 
 
-def error(message):
-    return jsonify({
-        "message": message
-    })
+def error(e):
+    return {
+        "message": e.message
+    }
 
 
 @app.route("/create_room")
@@ -55,6 +57,21 @@ def start_game(room_id):
     return jsonify(room.to_json())
 
 
-app.run(debug=True)
+@socketio.on('connect')
+def test_connect():
+    emit('connect', {'data': 'Connected'})
 
 
+@socketio.on('initialize_room')
+def initialize(room_id):
+    print("brap")
+    room = get_room_if_exists(room_id)
+    emit('something', {'data': room})
+
+
+@socketio.on_error_default  # handles all namespaces without an explicit error handler
+def default_error_handler(e):
+    emit('error', error(e))
+
+
+socketio.run(app, debug=True)
