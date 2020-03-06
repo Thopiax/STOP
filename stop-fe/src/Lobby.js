@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import * as _ from "lodash";
+import {Room} from "./Room";
 import {
   TextField,
   List,
@@ -58,8 +59,9 @@ const GuestLobby = (props) => {
 };
 
 export const Lobby = ({ player: { room_id, is_host } }) => {
+
   const onInitializeEvent = (room) => {
-    return <Game room={room}/>;
+    return <Room room={room}/>;
   };
 
   let contents = <GuestLobby/>;

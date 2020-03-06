@@ -8,7 +8,7 @@ import {
   useHistory
 } from "react-router-dom";
 import {Home} from "./Home";
-import {Game} from "./Game";
+import {Room} from "./Room";
 import {AppContainer} from "./Components";
 import {Socket} from "react-socket-io";
 
@@ -21,7 +21,7 @@ function App() {
         <AppContainer>
           <Switch>
             <Route exact path="/"><Home /></Route>
-            <Route path="/room/:roomid"><Game /></Route>
+            <Route path="/room/:roomid"><Room /></Route>
           </Switch>
         </AppContainer>
       </Router>
