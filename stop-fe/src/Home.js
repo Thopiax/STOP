@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import env from "./Environment";
 import {useHistory} from "react-router-dom";
 import {TextField} from "@material-ui/core";
+import { Event } from 'react-socket-io';
 
 export const Home = () => {
   const [roomId, setRoomId] = useState("");
@@ -10,6 +11,10 @@ export const Home = () => {
 
   const joinRoom = (id) => {
     history.push("room/" + id);
+  };
+
+  const onEvent = (payload) => {
+    console.log(payload);
   };
 
   const createRoom = () => {
@@ -28,6 +33,7 @@ export const Home = () => {
 
   return (
     <div>
+      <Event event='eventName' handler={onEvent} />
       <h1>STOP.io</h1>
       <div>
         <input type="text" value={roomId} onChange={(e) => setRoomId(e.target.value.toUpperCase())} />
