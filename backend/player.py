@@ -4,7 +4,7 @@ class Player:
         self.room = room
         self.id = color
         self.points = 0
-        self.answers = {}
+
 
     def to_json(self):
         return {

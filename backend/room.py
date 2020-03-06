@@ -1,5 +1,6 @@
 next_room_id = 0
 
+from backend.round import Round
 
 class Room:
 
@@ -16,12 +17,17 @@ class Room:
         self.running = True
 
     def start_round(self):
+        letter = self.choose_letter()
+        round = Round(letter)
         pass
 
     def finish_round(self):
         pass
 
     def finish_game(self):
+        pass
+
+    def choose_letter(self):
         pass
 
     def to_json(self):
