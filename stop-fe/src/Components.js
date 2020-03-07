@@ -37,11 +37,6 @@ export const HomeContent = styled.div`
   padding: 2rem;
 `;
 
-// export const HomeButton = styled(Button)`
-//   width: 100%;
-//   max-width: 500px;
-// `;
-
 export const HomeFormContainer = styled.form`
   height: 80px;
 `;

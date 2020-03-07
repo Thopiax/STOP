@@ -21,6 +21,7 @@ export const Home = () => {
 
   const createRoom = () => {
     console.log("[CreateRoom] Started call");
+
     fetch(env.BACKEND_URL + "/create_room")
       .then(res => res.json())
       .then(
