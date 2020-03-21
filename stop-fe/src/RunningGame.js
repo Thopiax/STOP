@@ -4,7 +4,7 @@ import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 
-export const RunningGame = ({room, player}) => {
+export const RunningGame = ({room, player, sendMessage}) => {
 
     const round = room.current_round;
     const initialAnswers = {};
@@ -17,6 +17,22 @@ export const RunningGame = ({room, player}) => {
 
     const onAnswerChange = (category, newValue) => {
         answers[category] = newValue;
+    };
+
+    const stop = () => {
+        sendMessage("stop_round", {
+            "room_id": room.id,
+            "player_id": player.id
+        })
+    };
+
+    const submitAnswer = (category) => {
+        sendMessage("submit_answer", {
+            "room_id": room.id,
+            "player_id": player.id,
+            "category": category,
+            "answer": answers[category]
+        })
     };
 
     return (
@@ -33,12 +49,17 @@ export const RunningGame = ({room, player}) => {
                             label={category}
                             value={answers[category]}
                             onChange={(e) => onAnswerChange(category, e.target.value)}
+                            onBlur={() => submitAnswer(category)}
                         />
                     )
                 }
             </Grid>
             <Grid item xs={12}>
-                <Button variant="outlined" color="primary">
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={stop}
+                >
                     STOP!
                 </Button>
             </Grid>

@@ -50,7 +50,7 @@ def test_end_to_end():
     assert round.points[p2.id] == 15
     assert len(room.round_history) == 2
 
-    points = room.end_game()
+    points = room.total_points()
 
     assert points[p1.id] == 40
     assert points[p2.id] == 20

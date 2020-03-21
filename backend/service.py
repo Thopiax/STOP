@@ -1,3 +1,5 @@
+import traceback
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
@@ -56,8 +58,8 @@ def join_room(room_id):
         "room": room.to_json()
     }
 
-    print("Joining room")
     emit("join_room", response)
+    emit("update_room", room.to_json(), broadcast=True)
 
 
 @socketio.on("start_round")
@@ -65,18 +67,35 @@ def start_round(payload):
     room = get_room_if_exists(payload["room_id"])
     room.choose_categories(payload["categories"])
     room.start_round()
-    emit("start_round", room.to_json())
+    emit("update_room", room.to_json(), broadcast=True)
 
 
-@socketio.on("end_round")
-def end_round(room_id):
-    room = get_room_if_exists(room_id)
-    round = room.end_round()
-    emit("end_round", round.to_json())
+@socketio.on("stop_round")
+def end_round(payload):
+    room = get_room_if_exists(payload["room_id"])
+    player = room.get_player_if_exists(payload["player_id"])
+    round = room.stop_round(player)
+    emit("update_room", room.to_json(), broadcast=True)
+
+
+@socketio.on("submit_answer")
+def submit_answer(payload):
+    room = get_room_if_exists(payload["room_id"])
+    player = room.get_player_if_exists(payload["player_id"])
+    room.current_round.submit_answer(player, payload["category"], payload["answer"])
+    emit("update_room", room.to_json(), broadcast=True)
+
+
+@socketio.on("return_to_lobby")
+def return_to_lobby(payload):
+    room = get_room_if_exists(payload["room_id"])
+    room.return_to_lobby()
+    emit("update_room", room.to_json(), broadcast=True)
 
 
 @socketio.on_error_default  # handles all namespaces without an explicit error handler
 def default_error_handler(e):
+    print(traceback.format_exc())
     emit("error", error(str(e)))
 
 

@@ -27,4 +27,6 @@ class Round:
             "letter": self.letter,
             "categories": self.categories,
             "answers": self.answers,
+            "points": self.points,
+            "stopped_by": self.stopped_by.id if self.stopped_by else None,
         }
