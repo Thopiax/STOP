@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 
 from backend.exceptions import BadRequestException
@@ -7,12 +8,13 @@ from backend.room import get_new_room_id, Room
 from backend.rooms import rooms, get_room_if_exists
 
 app = Flask(__name__)
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.errorhandler(BadRequestException)
 def handle_bad_request(e):
-    return jsonify(error(e))
+    return jsonify(error(e)), 400
 
 
 def error(e):
