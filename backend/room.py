@@ -47,11 +47,17 @@ class Room:
 
         return total_points
 
+    @property
+    def running(self):
+        return self.current_round is not None
+
     def to_json(self):
         return {
             "id": self.id,
-            "running": self.current_round is not None,
-            "current_round": self.current_round.to_json()
+            "running": self.running,
+            "current_round": self.current_round.to_json() if self.running else None,
+            "players": {player_id: player.to_json() for player_id, player in self.players.items()},
+            "unused_letters": self.unused_letters,
         }
 
 

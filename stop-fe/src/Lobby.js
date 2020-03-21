@@ -9,6 +9,10 @@ import {CategorySelection} from "./CategorySelection";
 const HostLobby = ({ roomId }) => {
   const [categories, setCategories] = useState([]);
 
+  const startGame = () => {
+
+  };
+
   return (<Container>
     <h2>Room {roomId}</h2>
     <CategorySelection categories={categories} setCategories={setCategories} />

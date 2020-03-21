@@ -21,7 +21,7 @@ function App() {
         <AppContainer>
           <Switch>
             <Route exact path="/"><Home /></Route>
-            <Route path="/room/:roomid"><Room /></Route>
+            <Route path="/room/:roomId"><Room /></Route>
           </Switch>
         </AppContainer>
       </Router>

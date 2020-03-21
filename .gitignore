@@ -1,5 +1,5 @@
 .idea
-env
+venv
 
 # Created by https://www.gitignore.io/api/react,macos,python,intellij
 # Edit at https://www.gitignore.io/?templates=react,macos,python,intellij
