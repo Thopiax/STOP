@@ -12,10 +12,3 @@ class Player:
             "room_id": self.room.id,
             "points": self.points,
         }
-
-
-colors = ["BLUE", "RED", "PURPLE", "YELLOW"]
-
-
-def get_new_color():
-    return colors.pop()

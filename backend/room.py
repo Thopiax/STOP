@@ -1,5 +1,6 @@
 from typing import List, Dict, Optional
 
+from backend.exceptions import BadRequestException
 from backend.player import Player
 from backend.round import Round
 from string import ascii_uppercase
@@ -17,9 +18,23 @@ class Room:
         self.current_round: Optional[Round] = None
         self.categories: List[str] = []
         self.round_history: List[Round] = []
+        self.host = None
+        self.unused_colors = ["BLUE", "RED", "PURPLE", "YELLOW"]
+
+    def get_new_color(self):
+        if not self.unused_colors:
+            raise BadRequestException("This room is currently full.")
+
+        # TODO: Pop when not developing
+        # return self.unused_colors.pop()
+        return self.unused_colors[0]
 
     def add_player(self, player: Player):
         self.players[player.id] = player
+
+        # First player to be added to the room is the host
+        if self.host is None:
+            self.host = player.id
 
     def start_round(self):
         letter = self.choose_letter()
@@ -58,6 +73,7 @@ class Room:
             "current_round": self.current_round.to_json() if self.running else None,
             "players": {player_id: player.to_json() for player_id, player in self.players.items()},
             "unused_letters": self.unused_letters,
+            "host": self.host
         }
 
 

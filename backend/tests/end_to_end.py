@@ -13,6 +13,8 @@ def test_end_to_end():
     room.add_player(p1)
     room.add_player(p2)
 
+    assert room.host == p1.id
+
     room.choose_categories(["Cars", "Drinks"])
 
     with patch("backend.room.randint", return_value=1):

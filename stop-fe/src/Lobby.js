@@ -1,39 +1,52 @@
 import React, {useState} from "react";
-import {Event} from "react-socket-io";
 
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 
 import {CategorySelection} from "./CategorySelection";
+import Grid from "@material-ui/core/Grid";
+import SocketContext from "./SocketContext";
 
-const HostLobby = ({ roomId }) => {
-  const [categories, setCategories] = useState([]);
+const HostLobby = ({room, sendMessage}) => {
+    const [categories, setCategories] = useState([]);
 
-  const startGame = () => {
+    const startGame = () => {
+        sendMessage("start_round", {
+            "room_id": room.id,
+            "categories": categories
+        })
+    };
 
-  };
-
-  return (<Container>
-    <h2>Room {roomId}</h2>
-    <CategorySelection categories={categories} setCategories={setCategories} />
-    <Button onClick={() => startGame()} variant="outlined" >Start Game</Button>
-  </Container>);
+    return (
+        <Grid container xs={12} spacing={3}>
+            <Grid item xs={12}>
+                <h2>Room {room.id}</h2>
+            </Grid>
+            <Grid item xs={12}>
+                <CategorySelection categories={categories} setCategories={setCategories}/>
+            </Grid>
+            <Grid item xs={12}>
+                <Button onClick={() => startGame()} variant="outlined">Start Game</Button>
+            </Grid>
+        </Grid>
+    );
 };
 
 const GuestLobby = (props) => {
-  return <p>Waiting for host to pick categories...</p>
+    return <p>Waiting for host to pick categories...</p>
 };
 
-export const Lobby = ({ player: { room_id, is_host } }) => {
-  let contents = <GuestLobby/>;
+export const Lobby = ({room, player}) => {
 
-  if (is_host) {
-    contents = <HostLobby roomId={room_id}/>;
-  }
+    const isHost = room.host === player.id;
 
-  return (
-    <Container>
-      {contents}
-    </Container>
-  );
+    return (
+        <SocketContext.Consumer>
+            { ({sendMessage, lastMessage}) =>
+                <Container>
+                    {isHost ? <HostLobby room={room} sendMessage={sendMessage}/> : <GuestLobby/>}
+                </Container>
+            }
+        </SocketContext.Consumer>
+    );
 };

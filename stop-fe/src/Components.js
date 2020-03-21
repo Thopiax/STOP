@@ -1,7 +1,5 @@
-import {Container} from "@material-ui/core";
 import styled from "styled-components";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
 
 export const AppContainer = styled.div`
   margin: 0;
@@ -22,6 +20,7 @@ export const HomeContainer = styled.div`
   
   background-color: #c0392b;
 `;
+
 
 export const HomeTitle = styled.h1`
    color: white;
