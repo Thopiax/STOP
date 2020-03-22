@@ -78,6 +78,7 @@ export const Room = (props) => {
         contents = <Lobby
             room={room}
             player={player}
+            sendMessage={sendMessage}
         />;
     }
 
@@ -116,18 +117,31 @@ export const Room = (props) => {
                                 :
                                 Object.keys(room.players).map(id => {
                                     const player = room.players[id];
+                                    let answers = 0;
+
+                                    if (gameState === GameState.RUNNING || gameState === GameState.STOPPED) {
+
+                                        Object.keys(room.current_round.answers[id]).forEach(category => {
+                                            if (room.current_round.answers[id][category] != null) {
+                                                answers += 1;
+                                            }
+                                        })
+                                    }
 
                                     return (
                                         <Avatar
                                             key={id}
                                             variant="rounded"
                                             style={{
-                                                width: "100px",
+                                                width: "200px",
                                                 height: "100px",
                                                 backgroundColor: player.id
                                             }}
                                         >
-                                            {id}<br/>{room.total_points[id]} points
+                                            {player.name}<br/>{room.total_points[id]} points<br/>
+                                            {gameState === GameState.RUNNING || gameState === GameState.STOPPED ?
+                                                answers + "/" + room.current_round.categories.length + " answers"
+                                                : ""}
                                         </Avatar>
                                     )
                                 })

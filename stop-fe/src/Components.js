@@ -18,6 +18,7 @@ export const HomeContainer = styled.div`
   align-items: center;
   
   background-color: #c0392b;
+  overflow: hidden;
 `;
 
 

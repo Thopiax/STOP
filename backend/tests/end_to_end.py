@@ -7,8 +7,8 @@ from backend.room import Room, get_new_room_id
 def test_end_to_end():
 
     room = Room(get_new_room_id())
-    p1 = Player(room, room.get_new_color())
-    p2 = Player(room, room.get_new_color())
+    p1 = Player(room.get_new_color(), room, "Danny")
+    p2 = Player(room.get_new_color(), room, "Bob")
 
     room.add_player(p1)
     room.add_player(p2)

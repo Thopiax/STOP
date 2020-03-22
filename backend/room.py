@@ -52,6 +52,7 @@ class Room:
 
     def return_to_lobby(self):
         self.state = RoomState.LOBBY
+        self.current_round = None
 
     def start_round(self):
         letter = self.choose_letter()
@@ -70,6 +71,9 @@ class Room:
 
     def choose_categories(self, categories):
         self.categories = categories
+
+    def change_name(self, player: Player, new_name: str):
+        player.name = new_name
 
     def total_points(self):
         total_points = {player: 0 for player in self.players}

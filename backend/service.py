@@ -48,8 +48,10 @@ def connect():
 @socketio.on("join_room")
 def join_room(room_id):
     room = get_room_if_exists(room_id)
+
+    # TODO: Use different IDs
     color = room.get_new_color()
-    player = Player(room, color)
+    player = Player(color, room, color)
 
     room.add_player(player)
 
@@ -90,6 +92,14 @@ def submit_answer(payload):
 def return_to_lobby(payload):
     room = get_room_if_exists(payload["room_id"])
     room.return_to_lobby()
+    emit("update_room", room.to_json(), broadcast=True)
+
+
+@socketio.on("change_name")
+def return_to_lobby(payload):
+    room = get_room_if_exists(payload["room_id"])
+    player = room.get_player_if_exists(payload["player_id"])
+    room.change_name(player, payload["new_name"])
     emit("update_room", room.to_json(), broadcast=True)
 
 

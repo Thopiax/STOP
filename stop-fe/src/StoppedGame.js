@@ -33,9 +33,9 @@ export const StoppedGame = ({room, player, sendMessage}) => {
                                     const points = round.points_breakdown[id][category];
 
                                     if (answer === null) {
-                                        return <p key={id}>{player.id} did not answer and scored {points} points</p>
+                                        return <p key={id}>{player.name} did not answer and scored {points} points</p>
                                     } else {
-                                        return <p key={id}>{player.id} answered '{answer}' and scored {points} points</p>
+                                        return <p key={id}>{player.name} answered '{answer}' and scored {points} points</p>
                                     }
                                 })
                             }

@@ -50,7 +50,11 @@ export const RunningGame = ({room, player, sendMessage}) => {
         })
     };
 
-    console.log(answers)
+    const onKeyDown = (e, category) => {
+        if (e.keyCode === 13) {
+            submitAnswer(category)
+        }
+    };
 
     return (
         <Grid container xs={12} spacing={3}>
@@ -67,6 +71,7 @@ export const RunningGame = ({room, player, sendMessage}) => {
                             value={answers[category]}
                             onChange={(e) => onAnswerChange(category, e.target.value)}
                             onBlur={() => submitAnswer(category)}
+                            onKeyDown={(e) => onKeyDown(e, category)}
                         />
                     )
                 }
