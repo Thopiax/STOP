@@ -1,4 +1,9 @@
-def calculate_score(answers: dict):
+from typing import List
+
+from backend.player import Player
+
+
+def calculate_score(players: List[str], categories: List[str], answers: dict):
     """
     answers = {
         "BLUE": {"cars" : "BMW",
@@ -13,27 +18,32 @@ def calculate_score(answers: dict):
         "BMW": ["BLUE", "RED"]
     }
     """
-    intermediate = {}
+    intermediate = {category: {} for category in categories}
 
-    for player, player_answers in answers.items():
+    for player_id, player_answers in answers.items():
         for category, answer in player_answers.items():
-            if answer not in intermediate:
-                intermediate[answer] = []
+            # A None answer means that the player hasn't answered this category
+            if not answer:
+                continue
 
-            intermediate[answer].append(player)
+            if answer not in intermediate[category]:
+                intermediate[category][answer] = []
 
-    points = {}
+            intermediate[category][answer].append(player_id)
 
-    for word, players in intermediate.items():
-        for player in players:
-            if player not in points:
-                points[player] = 0
+    points = {player_id: 0 for player_id in players}
+    breakdown = {player_id: {category: 0 for category in categories} for player_id in players}
 
-            if len(players) > 1:
-                points[player] += 5
-            elif len(players) == 1:
-                points[player] += 10
-            else:
-                raise AssertionError("Something fucked up")
+    for category, category_breakdown in intermediate.items():
+        for word, word_players in category_breakdown.items():
+            for player_id in word_players:
+                if len(word_players) > 1:
+                    breakdown[player_id][category] = 5
+                    points[player_id] += 5
+                elif len(word_players) == 1:
+                    breakdown[player_id][category] = 10
+                    points[player_id] += 10
+                else:
+                    raise AssertionError("Something fucked up")
 
-    return points
+    return points, breakdown

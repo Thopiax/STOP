@@ -55,12 +55,10 @@ class Room:
 
     def start_round(self):
         letter = self.choose_letter()
-        self.current_round = Round(letter, self.categories)
+        self.current_round = Round(list(self.players.values()), letter, self.categories)
         self.state = RoomState.RUNNING
 
-    def stop_round(self, player: Player) -> Dict[str, int]:
-        round = self.current_round
-
+    def stop_round(self, player: Player):
         self.current_round.stop(player)
         self.round_history.append(self.current_round)
         self.state = RoomState.STOPPED

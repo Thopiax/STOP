@@ -9,14 +9,29 @@ export const RunningGame = ({room, player, sendMessage}) => {
     const round = room.current_round;
     const initialAnswers = {};
 
-    for (const category in round.categories) {
+    round.categories.forEach(category => {
         initialAnswers[category] = ""
-    }
+    });
+    console.log("initial")
+    console.log(initialAnswers)
 
-    const answers = useState(initialAnswers);
+    const [answers, setAnswers] = useState(initialAnswers);
+
+    const countAnswers = () => {
+        let numberOfAnswers = 0;
+
+        round.categories.forEach(category => {
+            console.log("Answer for " + category + ": " + answers[category]);
+            if (answers[category] !== "") {
+                console.log("not equal")
+                numberOfAnswers += 1;
+            }
+        });
+        return numberOfAnswers;
+    };
 
     const onAnswerChange = (category, newValue) => {
-        answers[category] = newValue;
+        setAnswers({...answers, [category]: newValue});
     };
 
     const stop = () => {
@@ -34,6 +49,8 @@ export const RunningGame = ({room, player, sendMessage}) => {
             "answer": answers[category]
         })
     };
+
+    console.log(answers)
 
     return (
         <Grid container xs={12} spacing={3}>
@@ -59,6 +76,7 @@ export const RunningGame = ({room, player, sendMessage}) => {
                     variant="outlined"
                     color="primary"
                     onClick={stop}
+                    disabled={countAnswers() !== round.categories.length}
                 >
                     STOP!
                 </Button>

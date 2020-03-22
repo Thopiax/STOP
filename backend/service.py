@@ -104,4 +104,7 @@ with app.app_context():
     create_room()
 
 
-socketio.run(app, debug=True)
+import os
+
+port = os.environ.get("PORT", 5000)
+socketio.run(app, host="0.0.0.0", port=port, debug=True)

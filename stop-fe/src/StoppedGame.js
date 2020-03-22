@@ -29,8 +29,14 @@ export const StoppedGame = ({room, player, sendMessage}) => {
                             {
                                 Object.keys(room.players).map(id => {
                                     const player = room.players[id];
+                                    const answer = round.answers[id][category];
+                                    const points = round.points_breakdown[id][category];
 
-                                    return <p key={id}>{player.id} answered {round.answers[id][category]} and scored {round.points[id]} points</p>
+                                    if (answer === null) {
+                                        return <p key={id}>{player.id} did not answer and scored {points} points</p>
+                                    } else {
+                                        return <p key={id}>{player.id} answered '{answer}' and scored {points} points</p>
+                                    }
                                 })
                             }
                         </div>

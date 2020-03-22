@@ -10,6 +10,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import {StoppedGame} from "./StoppedGame";
+import Snackbar from "@material-ui/core/Snackbar";
 
 
 const GameState = {
@@ -27,7 +28,16 @@ export const Room = (props) => {
     const [player, setPlayer] = useState();
     const [room, setRoom] = useState();
     const [alertMessage, setAlertMessage] = useState("");
-    const [sendSocketIOMessage, lastMessage, readyState] = useSocketIO(env.WEBSOCKET_URL);
+    const [sendSocketIOMessage, lastMessage, readyState] = useSocketIO(env.BACKEND_URL);
+    const [alertOpen, setAlertOpen] = React.useState(false);
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setAlertOpen(false);
+    };
 
     const sendMessage = useCallback((type, payload) => {
         return sendSocketIOMessage(makeMessage(type, payload));
@@ -48,6 +58,7 @@ export const Room = (props) => {
 
             if (lastMessage.type === "error") {
                 setAlertMessage(lastMessage.payload.message);
+                setAlertOpen(true)
             }
 
             if (lastMessage.type === "join_room") {
@@ -60,14 +71,6 @@ export const Room = (props) => {
             }
         }
     }, [lastMessage]);
-
-    if (alertMessage !== "") {
-        return (
-            <Alert severity="error" variant="filled">
-                {alertMessage}
-            </Alert>
-        )
-    }
 
     let contents = null;
 
@@ -98,7 +101,7 @@ export const Room = (props) => {
 
     return (
         <SocketContext.Provider value={{sendMessage, lastMessage}}>
-            <Container>
+            <Container maxWidth="xl">
                 <Grid
                     container
                     spacing={3}
@@ -134,6 +137,12 @@ export const Room = (props) => {
                     <Grid item xs={6} style={{textAlign: "center"}}>
                         {contents}
                     </Grid>
+
+                    <Snackbar open={alertOpen} autoHideDuration={3000} onClose={handleAlertClose}>
+                        <Alert onClose={handleAlertClose} severity="error" variant="filled">
+                            {alertMessage}
+                        </Alert>
+                    </Snackbar>
                 </Grid>
             </Container>
         </SocketContext.Provider>
