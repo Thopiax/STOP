@@ -26,7 +26,7 @@ class Room:
         self.categories: List[str] = []
         self.round_history: List[Round] = []
         self.host = None
-        self.unused_colors = ["YELLOW", "PURPLE", "RED", "BLUE"]
+        self.unused_colors = ["YELLOW", "PINK", "GREEN", "PURPLE", "RED", "BLUE"]
         self.state = RoomState.LOBBY
 
     def get_new_color(self):
