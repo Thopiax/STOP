@@ -2,7 +2,7 @@ import React from 'react';
 import env from './Environment';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Home} from "./Home";
-import {Room} from "./Room";
+import {Room} from "./Game/Room";
 import {AppContainer} from "./Components";
 import {Socket} from "react-socket-io";
 
