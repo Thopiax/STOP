@@ -67,7 +67,6 @@ def join_room(room_id):
 @socketio.on("start_round")
 def start_round(payload):
     room = get_room_if_exists(payload["room_id"])
-    room.choose_categories(payload["categories"])
     room.start_round()
     emit("update_room", room.to_json(), broadcast=True)
 
@@ -77,6 +76,14 @@ def end_round(payload):
     room = get_room_if_exists(payload["room_id"])
     player = room.get_player_if_exists(payload["player_id"])
     round = room.stop_round(player)
+    emit("update_room", room.to_json(), broadcast=True)
+
+
+@socketio.on("choose_categories")
+def choose_categories(payload):
+    room = get_room_if_exists(payload["room_id"])
+    print(f"choosing categories {payload['categories']}")
+    room.choose_categories(payload["categories"])
     emit("update_room", room.to_json(), broadcast=True)
 
 

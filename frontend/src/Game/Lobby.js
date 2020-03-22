@@ -7,21 +7,23 @@ import {CategorySelection} from "./CategorySelection";
 import Grid from "@material-ui/core/Grid";
 import SocketContext from "../SocketContext";
 import TextField from "@material-ui/core/TextField";
+import {CategoryList} from "./CategoryList";
 
 const HostLobby = ({room, sendMessage}) => {
-    const [categories, setCategories] = useState([]);
 
     const startGame = () => {
         sendMessage("start_round", {
             "room_id": room.id,
-            "categories": categories
         })
     };
 
     return (
         <React.Fragment>
             <Grid item xs={12}>
-                <CategorySelection categories={categories} setCategories={setCategories}/>
+                <CategorySelection
+                    room={room}
+                    sendMessage={sendMessage}
+                />
             </Grid>
             <Grid item xs={12}>
                 <Button onClick={() => startGame()} variant="outlined">Start Game</Button>
@@ -30,8 +32,20 @@ const HostLobby = ({room, sendMessage}) => {
     );
 };
 
-const GuestLobby = (props) => {
-    return <p>Waiting for host to pick categories...</p>
+const GuestLobby = ({room}) => {
+    return (
+        <React.Fragment>
+            <Grid item xs={12}>
+                <CategoryList
+                    categories={room.categories}
+                    categoryAnswerCount={room.category_answer_count}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <p>Waiting for host to pick categories...</p>
+            </Grid>
+        </React.Fragment>
+    );
 };
 
 export const Lobby = ({room, player, sendMessage}) => {
@@ -58,7 +72,10 @@ export const Lobby = ({room, player, sendMessage}) => {
                     <TextField variant="outlined" label="Name" value={name} onChange={changeName}/>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
-                    {isHost ? <HostLobby room={room} sendMessage={sendMessage}/> : <GuestLobby/>}
+                    {isHost ?
+                        <HostLobby room={room} sendMessage={sendMessage}/>
+                        :
+                        <GuestLobby room={room} />}
                 </Grid>
             </Grid>
         </Container>

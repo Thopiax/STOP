@@ -83,6 +83,18 @@ class Room:
 
         return total_points
 
+    @property
+    def category_answer_count(self):
+        counts = {category: 0 for category in self.categories}
+
+        for round in self.round_history:
+            for player_id, answers in round.answers.items():
+                for category, answer in answers.items():
+                    if category in counts and answer:
+                        counts[category] += 1
+
+        return counts
+
     def to_json(self):
         return {
             "id": self.id,
@@ -92,7 +104,9 @@ class Room:
             "unused_letters": self.unused_letters,
             "round_history": [round.to_json() for round in self.round_history],
             "host": self.host,
-            "total_points": self.total_points()
+            "total_points": self.total_points(),
+            "categories": self.categories,
+            "category_answer_count": self.category_answer_count,
         }
 
 

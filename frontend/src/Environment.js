@@ -1,6 +1,8 @@
 const env = {
-  // BACKEND_URL: "http://localhost:5000",
-  BACKEND_URL: "http://stop-backend.herokuapp.com",
+  BACKEND_URL: process.env.REACT_APP_BACKEND_URL
 };
+
+console.log("Current environment:");
+console.log(env);
 
 export default env;

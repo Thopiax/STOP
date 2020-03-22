@@ -1,46 +1,57 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import * as _ from "lodash";
-import {IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField} from "@material-ui/core";
-import ClearIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import {CategoryList} from "./CategoryList";
+import FormControl from "@material-ui/core/FormControl";
 
-export const CategorySelection = ({categories, setCategories}) => {
+export const CategorySelection = ({room, sendMessage}) => {
     const [currentCategory, setCurrentCategory] = useState("");
+    const [categories, setCategories] = useState(room.categories);
 
-    const addCategory = (category) => {
-        setCategories([...categories, category]);
+    const addCategory = useCallback((category) => {
+        const newCategories = [...categories, category];
+        setCategories(newCategories);
         setCurrentCategory("");
-    };
+        sendCategories(newCategories);
+    }, [setCategories, setCurrentCategory, categories]);
 
-    const removeCategory = (category) => {
-        setCategories(_.without(categories, category))
-    };
+    const removeCategory = useCallback((category) => {
+        const newCategories = _.without(categories, category);
+        setCategories(newCategories);
+        sendCategories(newCategories);
+    }, [setCategories, categories]);
 
-    const CategoryList = ({categories}) => {
-        return (
-            <List>
-                {categories.map((category) => (
-                    <ListItem key={category}>
-                        <ListItemText primary={category}/>
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="clear" onClick={(e) => removeCategory(category)}>
-                                <ClearIcon/>
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                ))}
-            </List>
-        );
+    const sendCategories = (categories) => {
+        sendMessage("choose_categories", {
+            "room_id": room.id,
+            "categories": categories,
+        })
     };
 
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <CategoryList categories={categories}/>
+        <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+        >
+            <Grid item xs={6}>
+                <CategoryList
+                    categories={categories}
+                    removeCategory={removeCategory}
+                    categoryAnswerCount={room.category_answer_count}
+                />
             </Grid>
-            <Grid item xs={12}>
-                <TextField label="Category" value={currentCategory} onChange={(e) => setCurrentCategory(e.target.value)}/>
+            <Grid item xs={6}>
+                <FormControl fullWidth>
+                    <TextField
+                        label="Category"
+                        value={currentCategory}
+                        onChange={(e) => setCurrentCategory(e.target.value)}
+                    />
+                </FormControl>
                 <Button onClick={() => addCategory(currentCategory)}>Add</Button>
             </Grid>
         </Grid>
