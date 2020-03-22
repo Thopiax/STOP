@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect, useState} from "react";
 import env from "./Environment";
 import {useParams} from "react-router-dom";
-import {Lobby} from "./Lobby";
+import {Lobby} from "./Game/Lobby";
 import Alert from "@material-ui/lab/Alert";
 import {ReadyState, useSocketIO} from "react-use-websocket";
 import SocketContext, {makeMessage} from "./SocketContext";
-import {RunningGame} from "./RunningGame";
+import {RunningGame} from "./Game/RunningGame";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import {StoppedGame} from "./StoppedGame";
+import {StoppedGame} from "./Game/StoppedGame";
 import Snackbar from "@material-ui/core/Snackbar";
 
 

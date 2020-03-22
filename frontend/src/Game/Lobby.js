@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 
 import {CategorySelection} from "./CategorySelection";
 import Grid from "@material-ui/core/Grid";
-import SocketContext from "./SocketContext";
+import SocketContext from "../SocketContext";
 import TextField from "@material-ui/core/TextField";
 
 const HostLobby = ({room, sendMessage}) => {
