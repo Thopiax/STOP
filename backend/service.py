@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit
 
 from backend.exceptions import BadRequestException
 from backend.player import Player
-from backend.room import get_new_room_id, Room
+from backend.room import get_new_room_id, Room, RoomState
 from backend.rooms import rooms, get_room_if_exists
 
 app = Flask(__name__)
@@ -48,6 +48,9 @@ def connect():
 @socketio.on("join_room")
 def join_room(room_id):
     room = get_room_if_exists(room_id)
+
+    if room.state != RoomState.LOBBY:
+        raise BadRequestException("This game is currently in progress.")
 
     # TODO: Use different IDs
     color = room.get_new_color()
